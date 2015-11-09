@@ -52,9 +52,10 @@ define dotnet(
   case $version {
     '3.5': {
       case $windows_version {
-        '2008 R2', /^2012/:  { $type = 'feature' }
-        /^2003/, '2008', 'XP', 'Vista', '7', '8', '8.1': { $type = 'package' }
-        default: { $type = 'err' }
+        '2008 R2', /^2012/:             { $type = 'feature' }
+        '7', '8', '8.1':                { $type = 'dism'    }
+        /^2003/, '2008', 'XP', 'Vista': { $type = 'package' }
+        default:                        { $type = 'err'     }
       }
     }
     '4.0': {
@@ -87,21 +88,32 @@ define dotnet(
     default: { $type = 'err' }
   }
 
-  if $type == 'feature' {
-    dotnet::install::feature { "dotnet-feature-${version}":
-      ensure  => $ensure,
-      version => $version,
+  case $type {
+    'feature': {
+      dotnet::install::feature { "dotnet-feature-${version}":
+        ensure  => $ensure,
+        version => $version,
+      }
     }
-  } elsif $type == 'package' {
-    dotnet::install::package { "dotnet-package-${version}":
-      ensure      => $ensure,
-      version     => $version,
-      package_dir => $package_dir,
+    'dism': {
+      dotnet::install::dism { "dotnet-dism-${version}":
+        ensure  => $ensure,
+        version => $version,
+      }
     }
-  } elsif $type == 'builtin' {
-    # This .NET version is built into the OS. No configuration required.
-  } else {
-    fail("dotnet ${version} is not supported on windows ${windows_version}")
+    'package': {
+      dotnet::install::package { "dotnet-package-${version}":
+        ensure      => $ensure,
+        version     => $version,
+        package_dir => $package_dir,
+      }
+    }
+    'builtin': {
+      # This .NET version is built into the OS. No configuration required.
+    }
+    default: {
+      fail("dotnet ${version} is not supported on windows ${windows_version}")
+    }
   }
 
 }

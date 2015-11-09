@@ -1,7 +1,7 @@
 #
 define dotnet::install::feature(
-  $ensure = 'present',
-  $version = ''
+  $ensure  = 'present',
+  $version = '',
 ) {
 
   if $ensure == 'present' {
