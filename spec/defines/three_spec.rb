@@ -7,7 +7,7 @@ describe 'dotnet', :type => :define do
     { :ensure => 'present', :version => '3.5' }
   end
 
-  ['2008', '2008 R2', '2012', '2012 R2'].each do |release|
+  ['2008 R2', '2012', '2012 R2'].each do |release|
     context "with ensure => present, version => 3.5, os.release.full => #{release}" do
       let :facts do
         { :os => {'family' => 'windows', 'release' => { 'full' => release } } }
@@ -19,7 +19,7 @@ describe 'dotnet', :type => :define do
     end
   end
 
-  ['2008', '2008 R2', '2012', '2012 R2'].each do |release|
+  ['2008 R2', '2012', '2012 R2'].each do |release|
     context "with ensure => absent, version => 3.5, os.release.full => #{release}" do
       let :params do
         { :ensure => 'absent', :version => '3.5' }
@@ -35,7 +35,7 @@ describe 'dotnet', :type => :define do
   end
 
   pending("3.5 package-based install validation and code") do
-    ['2003', '2003 R2', 'XP', 'Vista', '7', '8', '8.7'].each do |release|
+    ['2003', '2003 R2', '2008', 'XP', 'Vista', '7', '8', '8.7'].each do |release|
       context "with ensure => present, version => 3.5, os.release.full => #{release}" do
         let :facts do
           { :os => {'family' => 'windows', 'release' => { 'full' => release } } }
@@ -51,7 +51,7 @@ describe 'dotnet', :type => :define do
       end
     end
 
-    ['2003', '2003 R2', 'XP', 'Vista', '7', '8', '8.7'].each do |release|
+    ['2003', '2003 R2', '2008', 'XP', 'Vista', '7', '8', '8.7'].each do |release|
       context "with ensure => absent, version => 3.5, os.release.full => #{release}" do
         let :params do
           { :ensure => 'absent', :version => '3.5' }
