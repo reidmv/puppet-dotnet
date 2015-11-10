@@ -39,9 +39,6 @@ define dotnet(
 
   Variant[String, Undef]
   $package_dir = undef,
-
-  Variant[String, Undef]
-  $source = undef,
 ) {
 
   include dotnet::params
@@ -55,7 +52,11 @@ define dotnet(
   case $version {
     '3.5': {
       case $windows_version {
-        '2008 R2', /^2012/:             { $type = 'feature' }
+        /^2012/: {
+          $type    = 'feature'
+          $feature = 'NET-Framework-Features'
+        }
+        '2008 R2':                      { $type = 'feature' }
         '7', '8', '8.1':                { $type = 'dism'    }
         /^2003/, '2008', 'XP', 'Vista': { $type = 'package' }
         default:                        { $type = 'err'     }
@@ -96,6 +97,8 @@ define dotnet(
       dotnet::install::feature { "dotnet-feature-${version}":
         ensure  => $ensure,
         version => $version,
+        feature => $feature,
+        source  => $package_dir,
       }
     }
     'dism': {
