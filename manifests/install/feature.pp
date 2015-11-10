@@ -9,14 +9,14 @@ define dotnet::install::feature(
       command   => 'Import-Module ServerManager; Add-WindowsFeature as-net-framework',
       provider  => powershell,
       logoutput => true,
-      unless    => "Test-Path C:\\Windows\\Microsoft.NET\\Framework\\v${version}",
+      creates   => "C:/Windows/Microsoft.NET/Framework/v${version}",
     }
   } else {
     exec { "uninstall-dotnet-feature-${version}":
       command   => 'Import-Module ServerManager; Remove-WindowsFeature as-net-framework',
       provider  => powershell,
       logoutput => true,
-      onlyif    => "Test-Path C:\\Windows\\Microsoft.NET\\Framework\\v${version}",
+      onlyif    => "If (-Not(Test-Path C:/Windows/Microsoft.NET/Framework/v${version})) { Exit 1 }",
     }
   }
 
