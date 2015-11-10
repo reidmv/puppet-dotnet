@@ -39,6 +39,9 @@ define dotnet(
 
   Variant[String, Undef]
   $package_dir = undef,
+
+  Variant[String, Undef]
+  $source = undef,
 ) {
 
   include dotnet::params
@@ -60,29 +63,29 @@ define dotnet(
     }
     '4.0': {
       case $windows_version {
-        /^2012/, '8', '8.1': { $type = 'builtin' }
+        /^2012/, '8', '8.1':                  { $type = 'builtin' }
         /^2003/, /^2008/, 'XP', 'Vista', '7': { $type = 'package' }
-        default: { $type = 'err' }
+        default:                              { $type = 'err'     }
       }
     }
     '4.5': {
       case $windows_version {
-        /^2012/, '8', '8.1': { $type = 'builtin' }
+        /^2012/, '8', '8.1':                  { $type = 'builtin' }
         /^2003/, /^2008/, 'XP', 'Vista', '7': { $type = 'package' }
-        default: { $type = 'err' }
+        default:                              { $type = 'err'     }
       }
     }
     '4.5.1': {
       case $windows_version {
-        '2012 R2', '8.1': { $type = 'builtin' }
+        '2012 R2', '8.1':                                  { $type = 'builtin' }
         /^2003/, /^2008/, '2012', 'XP', 'Vista', '7', '8': { $type = 'package' }
-        default: { $type = 'err' }
+        default:                                           { $type = 'err'     }
       }
     }
     '4.5.2': {
       case $windows_version {
         /^2003/, /^2008/, /^2012/, 'XP', 'Vista', '7', '8', '8.1': { $type = 'package' }
-        default: { $type = 'err' }
+        default:                                                   { $type = 'err'     }
       }
     }
     default: { $type = 'err' }
