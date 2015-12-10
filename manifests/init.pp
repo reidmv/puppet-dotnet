@@ -32,7 +32,7 @@
 #
 define dotnet(
   Enum['3.5', '4.0', '4.5', '4.5.1', '4.5.2']
-  $version = '4.6',
+  $version,
 
   Enum['present', 'absent']
   $ensure = 'present',
