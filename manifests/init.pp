@@ -32,7 +32,7 @@
 #
 define dotnet(
   Enum['3.5', '4.0', '4.5', '4.5.1', '4.5.2']
-  $version,
+  $version = '4.6',
 
   Enum['present', 'absent']
   $ensure = 'present',
@@ -50,6 +50,9 @@ define dotnet(
   $windows_version = $::os['release']['full']
 
   case $version {
+    $::dotnet4version: {
+	  $type = 'noaction'
+	}
     '3.5': {
       case $windows_version {
         /^2012/: {
@@ -117,6 +120,9 @@ define dotnet(
     'builtin': {
       # This .NET version is built into the OS. No configuration required.
     }
+	'noaction': {
+	  # Desired .NET version is already present
+	}
     default: {
       fail("dotnet ${version} is not supported on windows ${windows_version}")
     }
