@@ -127,5 +127,4 @@ define dotnet(
       fail("dotnet ${version} is not supported on windows ${windows_version}")
     }
   }
-
 }

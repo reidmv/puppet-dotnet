@@ -26,6 +26,8 @@ Facter.add(:dotnet4version) do
           'unknown'
 		end
       end
-    end
+	rescue
+	  puts 'not installed'
+	end
   end
 end
