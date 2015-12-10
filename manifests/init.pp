@@ -50,6 +50,9 @@ define dotnet(
   $windows_version = $::os['release']['full']
 
   case $version {
+    $::dotnet4version: {
+	  $type = 'noaction'
+	}
     '3.5': {
       case $windows_version {
         /^2012/: {
@@ -117,9 +120,11 @@ define dotnet(
     'builtin': {
       # This .NET version is built into the OS. No configuration required.
     }
+	'noaction': {
+	  # Desired .NET version is already present
+	}
     default: {
       fail("dotnet ${version} is not supported on windows ${windows_version}")
     }
   }
-
 }
